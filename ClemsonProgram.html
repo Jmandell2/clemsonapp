@@ -1,0 +1,993 @@
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Joel Programming</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-light navbar-light"><img src="https://unsplash.it/30/30" class="mr-2"><a class="navbar-brand" href="index.html">Joel Mandell</a><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-body" aria-controls="navbar-body" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbar-body">
+        <ul class="navbar-nav mr-auto"></ul>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Art</a></li>
+          <li class="nav-item"><a class="nav-link" href="ClemsonProgram.html">Programming</a></li>
+          <li class="nav-item"><a class="nav-link" href="writing.html">Writing Sample</a></li>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container" id="bsr-wrapper">
+      <div class="jumbotron">
+        <h1 class="display-4">Boating Data Website</h1>
+        <p class="lead">Imported boating and demographic data from Florida in csv format to analyze trends between the amount of boats and different types of boats in an area with demographic and economic trends in the same region. Programmed in Python, data visualized through plotly express, and website created using html.</p>
+        <hr class="my-4">
+        <p>Link to files for code        https://drive.google.com/drive/folders/1UcKFn-vgfldbexK3neNOlWs108Qz6T2H?usp=sharing
+</p><a class="btn btn-primary btn-lg" href="https://jmandell2.github.io/10_Florida_Boats/index.html " role="button">Boating Website</a>
+      </div>
+      <h1 class="display-4">Boating Data Code</h1>
+      <pre class="prettyprint lang-auto">import pandas as pd
+import csv
+import plotly.express as px
+from pandas.core.arrays import string_
+from operator import index
+import pandas as pd
+
+
+
+
+fh = open('Florida_Population.csv')
+florida_census_hispanic = list(csv.reader(fh))
+fh = open('Population_sex:race.csv')
+florida_census = list(csv.reader(fh))
+
+hispanic_female = []
+hispanic_male = []
+hispanic_total = []
+black_female = []
+black_male = []
+black_total = []
+
+
+for his in range(len(florida_census_hispanic)):
+  if his > 6 and florida_census_hispanic[his] != florida_census_hispanic[-1]:
+    hispanic_female.append(int(florida_census_hispanic[his][1]))
+    hispanic_male.append(int(florida_census_hispanic[his][2]))
+    hispanic_total.append(int(florida_census_hispanic[his][3]))
+for his in range(len(florida_census)):
+  if his > 6 and florida_census[his] != florida_census[-1]:
+    black_female.append(int(florida_census[his][4]))
+    black_male.append(int(florida_census[his][5]))
+    black_total.append(int(florida_census[his][6]))
+    # a list of average income by county
+income_list = [52367, 40735, 53980, 39748, 55477, 64453, 35792, 51677, 45050, 51885, 117984, 43184, 32873, 33813, 54354, 51808, 56336, 41878, 44832, 41769, 33401, 49250, 32123, 35636, 46080, 41568, 58140, 37381, 95109, 39322, 50197, 31218, 49831, 62885, 54277, 43272, 32872, 39165, 59152, 45152, 102273, 64849, 109136, 70010, 59384, 39747, 54979, 43354, 100627, 50479, 65936, 43556, 40376, 53778, 78815, 58539, 80062, 50038, 64282, 39039, 35156, 25293, 52964, 45669, 78714, 36331]
+
+
+fh = open('County_GDP.csv')
+county_gdp = list(csv.reader(fh))
+florida = []
+for county in county_gdp:
+  if 'Florida' in county:
+    print(county_gdp.index(county))
+  if 'Georgia' in county:
+    print(county_gdp.index(county))
+for county in range(len(county_gdp)):
+  if county > 345 and county < 414:
+    florida.append(county_gdp[county][3])
+florida_gdp = []
+for obj in florida:
+  if type(obj) == str and obj != florida[-1]:
+    new_obj = (int(obj.replace(',', '')))
+    florida_gdp.append(new_obj)
+
+# Taking a csv of the gdp of each individual county from each state in the US and separating out the florida county data from the other state's data.
+# Then, cleaning the data with a replace function before making it into its own list.
+
+fh = open('medage.csv')
+medage_list = list(csv.reader(fh))
+print(medage_list)
+medage = []
+for n in range(len(medage_list)):
+  if n > 3:
+    medage.append(float(medage_list[n][1]))
+print(medage)
+# Taking a csv of the median age by county in florida and selecting the data from each county in 2020 to put into its own list.
+
+pop_total = []
+fh = open('FloridaPopByCounty.csv')
+pop_list = list(csv.reader(fh))
+pop2 = []
+for pop in range(len(pop_list)):
+  if pop > 2:
+    pop2.append(pop_list[pop][2])
+for pop in pop2:
+  new_obj = (int(pop.replace(',', '')))
+  pop_total.append(new_obj)
+print(pop_total)
+# taking a csv of Florida population by county and cleaning it with a replace function before making it into its own list.
+
+precip = []
+fh = open('12monthprecip.csv')
+precip_list = list(csv.reader(fh))
+print(precip_list)
+for p in range(len(precip_list)):
+  if p > 3:
+    precip.append(float(precip_list[p][2]))
+print(precip)
+# A csv of the average precipitation per county turned into a list.
+
+violent_crime = []
+fh = open('crime.csv')
+crime_list = list(csv.reader(fh))
+print(crime_list)
+for c in range(len(crime_list)):
+  if c > 3:
+    violent_crime.append(int(crime_list[c][1]))
+print(violent_crime)
+# The number of violent crime incidents divided per county turned into a list
+
+obesity = []
+fh = open('obseity.csv')
+obesity_list = list(csv.reader(fh))
+print(obesity_list)
+o_list = []
+for o in range(len(obesity_list)):
+  if o > 3:
+    o_list.append(obesity_list[o][1])
+print(o_list)
+for o in o_list:
+  new_o = (o[0] + o[1] + o[2] + o[3] + o[4])
+  obesity.append(float(new_o))
+print(obesity)
+
+pct_white = [61.1, 79.9, 74.9, 73.9, 73.9, 39.9, 78.7, 84.3, 87.5, 71.0, 68.4, 72.8, 62.8, 83.9, 51.7, 64.3, 76.0, 80.3, 34.1, 84.9, 68.0, 80.3, 57.3, 58.5, 46.6, 78.4, 70.7, 52.6, 86.8, 76.7, 66.3, 61.4, 77.4, 70.2, 69.7, 56.1, 79.5, 74.3, 58.0, 72.3, 71.4, 78.6, 29.5, 72.6, 85.3, 71.7, 68.9, 44.0, 40.6, 57.3, 74.2, 73.9, 60.6, 71.4, 80.6, 58.4, 80.4, 82.7, 61.5, 86.4, 76.0, 73.6, 73.7, 72.3, 78.8, 82.1, 78.2]
+white_total = []
+for white in range(len(pop_total)):
+  blanc = pop_total[white] * (pct_white[white] / 100)
+  white_total.append(blanc)
+print(white_total)
+
+
+fh4 = open('final_vesselstats2021-2.csv')
+boat_stats_2021 = list(csv.reader(fh4))
+d = 'd'
+r = 'r'
+election_list = [d, r, r, r, r, d, r, r, r, r, r, r, d, r, r, d, r, r, r, d, r, r, r, r, r, r, r, r, d, r, r, r, r, r, r, r, d, r, r, r, r, r, r, r, r, r, r, d, d, d, r, d, r, r, r, r, r, r, d, r, r, r, r, r, r, r, r]
+
+county_list = []
+Class_A1_Pleasure = []
+Class_A2_Pleasure = []
+Class_A1_Commercial = []
+Class_1_Pleasure = []
+Class_1_Commercial = []
+Class_3_Pleasure = []
+Class_5_Pleasure = []
+Total_Pleasure = []
+Class_2_Pleasure = []
+Class_A2_Commercial = []
+Class_5_Commercial = []
+Class_3_Commercial = []
+Class_2_Commercial = []
+Class_4_Pleasure = []
+Class_4_Commercial = []
+for count in boat_stats_2021:
+  if count != boat_stats_2021[0] and count != boat_stats_2021[1] and count != boat_stats_2021[2]:
+     county_list.append(count[0])
+     Class_A1_Pleasure.append(float(count[1]))
+     Class_A2_Pleasure.append(int(count[2]))
+     Class_A1_Commercial.append(int(count[3]))
+     Class_1_Pleasure.append(int(count[4]))
+     Class_1_Commercial.append(int(count[5]))
+     Class_3_Pleasure.append(int(count[6]))
+     Class_5_Pleasure.append(int(count[7]))
+     Total_Pleasure.append(int(count[8]))
+     Class_2_Pleasure.append(int(count[9]))
+     Class_A2_Commercial.append(int(count[10]))
+     Class_5_Commercial.append(int(count[11]))
+     Class_3_Commercial.append(int(count[12]))
+     Class_2_Commercial.append(int(count[13]))
+     Class_4_Pleasure.append(int(count[14]))
+     Class_4_Commercial.append(int(count[15]))
+# Taking a csv of boat classification by county and dividing it up into lists
+
+coastal_counties = ['Escambia', 'Santa Rosa', 'Okaloosa', 'Walton', 'Bay', 'Gulf', 'Franklin', 'Wakulla', 'Jefferson', 'Taylor', 'Dixie', 'Levy', 'Citrus', 'Hernando', 'Pasco', 'Pinellas', 'Hillsborough', 'Manatee', 'Sarasota', 'Charlotte', 'Lee', 'Collier', 'Monroe', 'Dade', 'Broward', 'Palm Beach', 'Martin', 'St. Lucie', 'Indian River', 'Brevard', 'Volusia', 'Flagler', 'St. Johns', 'Duval', 'Nassau']
+coast = []
+for count in county_list:
+  if count in coastal_counties:
+    coast.append('y')
+  else:
+    coast.append('n')
+print(coast)
+Total_Commercial = []
+commercial_list = [Class_A1_Commercial, Class_1_Commercial, Class_A2_Commercial, Class_5_Commercial, Class_4_Commercial, Class_3_Commercial, Class_2_Commercial]
+d = 0
+while d < len(commercial_list[0]):
+  n = 0
+  total = 0
+  while n < len(commercial_list):
+    total += commercial_list[n][d]
+    n += 1
+  Total_Commercial.append(total)
+  d += 1
+
+boats_per_person = []
+for x in range(len(pop_total)):
+  boats = Total_Pleasure[x] / pop_total[x]
+  boats_per_person.append(boats)
+
+
+zipped_list = list(zip(county_list, Class_A1_Pleasure, Class_A2_Pleasure, Class_1_Pleasure, Class_2_Pleasure, Class_3_Pleasure, Class_4_Pleasure, Class_5_Pleasure, Total_Pleasure, Class_A1_Commercial, Class_A2_Commercial, Class_1_Commercial, Class_2_Commercial, Class_3_Commercial, Class_4_Commercial, Class_5_Commercial, Total_Commercial, income_list, election_list, hispanic_total, white_total, black_total, pop_total, boats_per_person, pct_white, coast, florida_gdp, medage, precip, violent_crime, obesity))
+boat_df = pd.DataFrame(zipped_list, columns=['County', 'Pleasure < 12 Ft', 'Pleasure 12-15 Ft', 'Pleasure 16-25 Ft', 'Pleasure 26-39 Ft', 'Pleasure 40-64 Ft', 'Pleasure 65-109 Ft', 'Pleasure 110+ Ft', 'Total Pleasure', 'Commercial < 12 Ft', 'Commercial 12-15 Ft', 'Commercial 16-25 Ft', 'Commercial 26-39 Ft', 'Commercial 40-64 Ft', 'Commercial 65-109 Ft', 'Commercial 110+ Ft', 'Total Commercial', 'Average Income', 'Voting', 'Hispanic', 'White', 'Black', 'Total Population', 'Boats per Person', 'Percent White', 'On Coast', 'GDP', 'Median Age', 'Precipitation', 'Violent Crime', 'Obesity'])
+print(boat_df)
+
+# Taking the created lists, compiling them into one zipped list, and then creating a dataframe out of the zipped list to create graphs out of.
+
+# Graphs created using plotly express of the data below
+
+fig = px.bar(boat_df, x='County', y='Boats per Person',
+             hover_data=['Pleasure 110+ Ft'], color='Average Income',
+             labels={'Total Pleasure':'Pleasure Boats'}, height=400)
+fig.show()
+
+fig = px.bar(boat_df, x='County', y='Total Commercial',
+             hover_data=['Pleasure 110+ Ft'], color='Average Income',
+             labels={'Total Pleasure':'Pleasure Boats'}, height=400)
+fig.show()
+
+import numpy as np
+fig = px.treemap(boat_df, path=[px.Constant("Total Population"), 'On Coast', 'County'], values='Boats per Person',
+                  color='Average Income', hover_data=['Percent White'],
+                  color_continuous_scale='RdBu',
+                  color_continuous_midpoint=np.average(boat_df['Average Income'], weights=boat_df['Percent White']))
+fig.update_layout(margin = dict(t=50, l=25, r=25, b=25))
+fig.show()
+
+fig = px.treemap(boat_df, path=[px.Constant("Total Population"), 'On Coast', 'County'], values='Boats per Person',
+                  color='Total Commercial', hover_data=['Percent White'],
+                  color_continuous_scale='RdBu',
+                  color_continuous_midpoint=np.average(boat_df['Total Commercial'], weights=boat_df['Percent White']))
+fig.update_layout(margin = dict(t=50, l=25, r=25, b=25))
+fig.show()
+
+fig = px.scatter(boat_df, x="Average Income", y="Boats per Person", color="Voting",
+                 size='Obesity', hover_data=['County'])
+fig.show()
+fh = open('data_viz_embed_just_div.html', 'w') # this just creates a blank file, so that the write_html() function can write to this file later
+fh.close()
+# Step 3: use pio to fill file with embed code for fig
+import plotly.io as pio
+pio.write_html(fig, file='data_viz_embed_just_div.html', auto_open=True, full_html=False) # preferred method
+
+fig = px.scatter(boat_df, x="Average Income", y="Total Commercial", color="Voting",
+                 size='Obesity', hover_data=['County'])
+fig.show()
+
+fig = px.scatter(boat_df, x="Obesity", y="Total Pleasure", color="Voting",
+                 size='Obesity', hover_data=['County'])
+fig.show()
+
+fig = px.scatter(boat_df, x="Violent Crime", y="Boats per Person", color="Voting",
+                 size='Obesity', hover_data=['County'], title='Violent Crime vs. Boats per Person')
+fig.show()
+
+fig = px.violin(boat_df, y="Boats per Person", color="On Coast",
+                violinmode='overlay', # draw violins on top of each other
+                # default violinmode is 'group' as in example above
+                hover_data=boat_df.columns)
+fig.show()
+
+fig = px.scatter_3d(boat_df, x='Total Commercial', y='Violent Crime', z='Boats per Person',
+              color='On Coast')
+fig.show()
+
+fig = px.violin(boat_df, y="Total Commercial", color="On Coast",
+                violinmode='overlay', # draw violins on top of each other
+                # default violinmode is 'group' as in example above
+                hover_data=boat_df.columns)
+fig.show()
+
+fig = px.scatter(boat_df, x="GDP", y="Boats per Person", color="Voting",
+                 size='Obesity', hover_data=['County'], title='GDP vs Boats per Person')
+fig.show()
+
+fig = px.violin(boat_df, y="Boats per Person", color="Voting",
+                violinmode='overlay', title= 'Personal Boats by Party', # draw violins on top of each other
+                # default violinmode is 'group' as in example above
+                hover_data=boat_df.columns)
+fig.show()
+
+fig = px.box(boat_df, x="Voting", y="Total Commercial", color="On Coast")
+fig.update_traces(quartilemethod="exclusive") # or "inclusive", or "linear" by default
+fig.show()
+
+fig = px.violin(boat_df, y="Boats per Person", color="On Coast",
+                violinmode='overlay', # draw violins on top of each other
+                # default violinmode is 'group' as in example above
+                hover_data=boat_df.columns)
+fig.show()
+
+fig = px.density_contour(boat_df, x="Violent Crime", y="Total Commercial")
+fig.update_traces(contours_coloring="fill", contours_showlabels = True)
+fig.show()
+
+fig = px.scatter(boat_df, x="Violent Crime", y="Boats per Person", trendline="ols")
+fig.show()
+
+
+
+
+
+            </pre>
+              <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+              <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+              <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+              <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+              <script src="js/main.js"></script>
+
+              <div class="jumbotron">
+                <h1 class="display-4">Recruiting Data Comparison</h1>
+                <p class="lead">Compared College Football recruiting data over a four year span, imported it into Python, and converted it into lists to use in a dataframe.</p>
+                <hr class="my-4">
+
+              </div>
+
+              <pre class='prettyprint linenums lang-py'>
+
+
+import requests # requests
+from bs4 import BeautifulSoup # beautiful soup
+import pandas as pd # pandas
+import re # regular expressions
+
+page = requests.get("http://www.espn.com/college-sports/football/recruiting/playerrankings/_/class/2019/order/true")
+
+# create beautifulsoup object
+soup = BeautifulSoup(page.text, 'html.parser')
+
+# isolate rows
+body = soup.find_all("tr")
+
+head = soup.find_all("th")
+
+name = soup.find_all("td")
+
+#Creating beautiful soup object to extract the recruiting table from ESPN.com
+
+print(name[13])
+rank = name[9]
+player = name[10]
+pos = name[11]
+town = name[12]
+height = name[13]
+weight = name[14]
+stars = name[15]
+grade = name[16]
+school = name[17]
+
+pos = pos.contents[0]
+print(pos)
+
+#separating data into rank, player, position, hometown, height, weight, stars, grade, and school
+
+player_list = []
+n = 9
+while n &lt; len(name):
+  mini_list = []
+  rank = int(name[n].contents[0])
+  mini_list.append(rank)
+  rank = name[n + 1].contents[0]
+  mini_list.append(rank)
+  rank = name[n + 2].contents[0]
+  mini_list.append(rank)
+  rank = name[n + 3].contents[0]
+  mini_list.append(rank)
+  rank = name[n + 4].contents[0]
+  mini_list.append(rank)
+  rank = int(name[n + 5].contents[0])
+  mini_list.append(rank)
+  rank = name[n + 6].contents[0]
+  mini_list.append(rank)
+  rank = name[n + 7].contents[0]
+  mini_list.append(rank)
+  rank = name[n + 8].contents[0]
+  mini_list.append(rank)
+  player_list.append(mini_list)
+  n += 9
+print(player_list)
+
+#Taking the data and separating it out into lists
+
+names = []
+for player in player_list:
+  r = str(player[1]).split('/')
+  name = r[10]
+  names.append(name)
+full_names = []
+for n in names:
+  n = n.strip()
+  n = n.split('"')
+  nam = n[0]
+  na = nam.replace('-', ' ')
+  na = na.title()
+  full_names.append(na)
+print(full_names)
+
+#Cleaning name data with splits, replaces, and the title funciton
+
+for p in range(len(player_list)):
+  player_list[p][1] = full_names[p]
+
+  stars = []
+for s in player_list:
+  star = s[6]
+  stars.append(star)
+stars_list = []
+for st in stars:
+  st = str(st).split('"')
+  rating = st[-2]
+  rat = rating.split(' ')
+  star = rat[1]
+  star = star.replace('-', ' ')
+  stars_list.append(star)
+for star in range(len(stars_list)):
+  if stars_list[star] == 'five star':
+    stars_list[star] = 5
+  if stars_list[star] == 'four star':
+    stars_list[star] = 4
+for s in range(len(player_list)):
+  player_list[s][6] = stars_list[s]
+print(player_list)
+
+#Repeating the process for the remainder of the categories
+
+for l in range(len(player_list)):
+state = player_list[l][3]
+state = state.split(', ')
+st = state[1]
+player_list[l][3] = st
+
+for l in range(len(player_list)):
+rating = player_list[l][7]
+rating = int(rating)
+player_list[l][7] = rating
+
+for l in range(len(player_list)):
+height = player_list[l][4]
+height = height.replace('\'', '.')
+heigh = height[0] + height[1] + height[2]
+new_height = float(heigh)
+player_list[l][4] = new_height
+
+for l in range(len(player_list)):
+if l < 101:
+  school = player_list[l][8]
+  school = str(school).split('school-name')
+  sch = school[1]
+  college = sch.split('<br')
+  col = college[0]
+  coll = col.split(">")
+  coll = coll[1]
+  coll = coll.strip()
+  if coll == 'Texas A&mp;M':
+    coll == 'Texas A&m'
+  player_list[l][8] = coll
+
+players_listn = []
+for stat in range(len(player_list)):
+  if stat <= 100:
+    players_listn.append(player_list[stat])
+
+# Repeating the process with three more recruiting classes
+page = requests.get("http://www.espn.com/college-sports/football/recruiting/playerrankings/_/class/2017/order/true")
+
+# create beautifulsoup object
+soup = BeautifulSoup(page.text, 'html.parser')
+
+# isolate section of page with current roster
+body = soup.find_all("tr")
+
+# create list of rows
+head = soup.find_all("th")
+
+name = soup.find_all("td")
+
+# show single row
+
+print(name[13])
+rank = name[9]
+player = name[10]
+pos = name[11]
+town = name[12]
+height = name[13]
+weight = name[14]
+stars = name[15]
+grade = name[16]
+school = name[17]
+
+pos = pos.contents[0]
+print(pos)
+
+player_list3 = []
+n = 9
+while n < len(name):
+  mini_list = []
+  rank = int(name[n].contents[0])
+  mini_list.append(rank)
+  rank = name[n + 1].contents[0]
+  mini_list.append(rank)
+  rank = name[n + 2].contents[0]
+  mini_list.append(rank)
+  rank = name[n + 3].contents[0]
+  mini_list.append(rank)
+  rank = name[n + 4].contents[0]
+  mini_list.append(rank)
+  rank = int(name[n + 5].contents[0])
+  mini_list.append(rank)
+  rank = name[n + 6].contents[0]
+  mini_list.append(rank)
+  rank = name[n + 7].contents[0]
+  mini_list.append(rank)
+  rank = name[n + 8].contents[0]
+  mini_list.append(rank)
+  player_list3.append(mini_list)
+  n += 9
+print(player_list3)
+
+names = []
+for player in player_list3:
+  r = str(player[1]).split('/')
+  name = r[10]
+  names.append(name)
+full_names = []
+for n in names:
+  n = n.strip()
+  n = n.split('"')
+  nam = n[0]
+  na = nam.replace('-', ' ')
+  na = na.title()
+  full_names.append(na)
+print(full_names)
+
+for p in range(len(player_list3)):
+  player_list3[p][1] = full_names[p]
+print(player_list3)
+
+stars = []
+for s in player_list3:
+  star = s[6]
+  stars.append(star)
+stars_list = []
+for st in stars:
+  st = str(st).split('"')
+  rating = st[-2]
+  rat = rating.split(' ')
+  star = rat[1]
+  star = star.replace('-', ' ')
+  stars_list.append(star)
+for star in range(len(stars_list)):
+  if stars_list[star] == 'five star':
+    stars_list[star] = 5
+  if stars_list[star] == 'four star':
+    stars_list[star] = 4
+for s in range(len(player_list3)):
+  player_list3[s][6] = stars_list[s]
+print(player_list3)
+
+for l in range(len(player_list3)):
+  state = player_list3[l][3]
+  state = state.split(', ')
+  st = state[1]
+  player_list3[l][3] = st
+print(player_list3)
+
+for l in range(len(player_list3)):
+  rating = player_list3[l][7]
+  rating = int(rating)
+  player_list3[l][7] = rating
+print(player_list3)
+
+for l in range(len(player_list3)):
+  height = player_list3[l][4]
+  height = height.replace('\'', '.')
+  heigh = height[0] + height[1] + height[2]
+  new_height = float(heigh)
+  player_list3[l][4] = new_height
+print(player_list3)
+
+print(player_list3)
+for l in range(len(player_list3)):
+  if l < 101:
+    school = player_list3[l][8]
+    school = str(school).split('school-name')
+    sch = school[1]
+    college = sch.split('<br')
+    col = college[0]
+    coll = col.split(">")
+    coll = coll[1]
+    coll = coll.strip()
+    if coll == 'Texas A&mp;M':
+      coll == 'Texas A&m'
+    player_list3[l][8] = coll
+
+print(player_list3)
+players_list3n = []
+for stat in range(len(player_list3)):
+  if stat <= 100:
+    players_list3n.append(player_list3[stat])
+print(players_list3n)
+
+page = requests.get("http://www.espn.com/college-sports/football/recruiting/playerrankings/_/class/2016/order/true")
+
+# create beautifulsoup object
+soup = BeautifulSoup(page.text, 'html.parser')
+
+# isolate section of page with current roster
+body = soup.find_all("tr")
+
+# create list of rows
+head = soup.find_all("th")
+
+name = soup.find_all("td")
+
+# show single row
+
+print(name[13])
+rank = name[9]
+player = name[10]
+pos = name[11]
+town = name[12]
+height = name[13]
+weight = name[14]
+stars = name[15]
+grade = name[16]
+school = name[17]
+
+pos = pos.contents[0]
+print(pos)
+
+
+
+player_list4 = []
+n = 9
+while n < len(name):
+  mini_list = []
+  rank = int(name[n].contents[0])
+  mini_list.append(rank)
+  rank = name[n + 1].contents[0]
+  mini_list.append(rank)
+  rank = name[n + 2].contents[0]
+  mini_list.append(rank)
+  rank = name[n + 3].contents[0]
+  mini_list.append(rank)
+  rank = name[n + 4].contents[0]
+  mini_list.append(rank)
+  rank = int(name[n + 5].contents[0])
+  mini_list.append(rank)
+  rank = name[n + 6].contents[0]
+  mini_list.append(rank)
+  rank = name[n + 7].contents[0]
+  mini_list.append(rank)
+  rank = name[n + 8].contents[0]
+  mini_list.append(rank)
+  player_list4.append(mini_list)
+  n += 9
+print(player_list4)
+
+names = []
+for player in player_list4:
+  r = str(player[1]).split('/')
+  name = r[10]
+  names.append(name)
+full_names = []
+for n in names:
+  n = n.strip()
+  n = n.split('"')
+  nam = n[0]
+  na = nam.replace('-', ' ')
+  na = na.title()
+  full_names.append(na)
+print(full_names)
+
+for p in range(len(player_list4)):
+  player_list4[p][1] = full_names[p]
+print(player_list4)
+
+stars = []
+for s in player_list4:
+  star = s[6]
+  stars.append(star)
+stars_list = []
+for st in stars:
+  st = str(st).split('"')
+  rating = st[-2]
+  rat = rating.split(' ')
+  star = rat[1]
+  star = star.replace('-', ' ')
+  stars_list.append(star)
+for star in range(len(stars_list)):
+  if stars_list[star] == 'five star':
+    stars_list[star] = 5
+  if stars_list[star] == 'four star':
+    stars_list[star] = 4
+for s in range(len(player_list4)):
+  player_list4[s][6] = stars_list[s]
+print(player_list4)
+
+for l in range(len(player_list4)):
+  state = player_list4[l][3]
+  state = state.split(', ')
+  st = state[1]
+  player_list4[l][3] = st
+print(player_list4)
+
+for l in range(len(player_list4)):
+  rating = player_list4[l][7]
+  rating = int(rating)
+  player_list4[l][7] = rating
+print(player_list4)
+
+for l in range(len(player_list4)):
+  height = player_list4[l][4]
+  height = height.replace('\'', '.')
+  heigh = height[0] + height[1] + height[2]
+  new_height = float(heigh)
+  player_list4[l][4] = new_height
+print(player_list4)
+
+print(player_list4)
+for l in range(len(player_list4)):
+  school = player_list4[l][8]
+  school = str(school).split('school-name')
+  sch = school[1]
+  college = sch.split('<br')
+  col = college[0]
+  coll = col.split(">")
+  coll = coll[1]
+  coll = coll.strip()
+  if coll == 'Texas A&mp;M':
+    coll == 'Texas A&m'
+  player_list4[l][8] = coll
+
+print(player_list4)
+players_list4n = []
+for stat in range(len(player_list4)):
+  if stat <= 100:
+    players_list4n.append(player_list4[stat])
+print(players_list4n)
+
+page = requests.get("http://www.espn.com/college-sports/football/recruiting/playerrankings/_/class/2018/order/true")
+
+# create beautifulsoup object
+soup = BeautifulSoup(page.text, 'html.parser')
+
+# isolate section of page with current roster
+body = soup.find_all("tr")
+
+# create list of rows
+head = soup.find_all("th")
+
+name = soup.find_all("td")
+
+# show single row
+
+print(name[13])
+rank = name[9]
+player = name[10]
+pos = name[11]
+town = name[12]
+height = name[13]
+weight = name[14]
+stars = name[15]
+grade = name[16]
+school = name[17]
+
+pos = pos.contents[0]
+print(pos)
+
+
+
+player_list2 = []
+n = 9
+while n < len(name):
+  mini_list = []
+  rank = int(name[n].contents[0])
+  mini_list.append(rank)
+  rank = name[n + 1].contents[0]
+  mini_list.append(rank)
+  rank = name[n + 2].contents[0]
+  mini_list.append(rank)
+  rank = name[n + 3].contents[0]
+  mini_list.append(rank)
+  rank = name[n + 4].contents[0]
+  mini_list.append(rank)
+  rank = int(name[n + 5].contents[0])
+  mini_list.append(rank)
+  rank = name[n + 6].contents[0]
+  mini_list.append(rank)
+  rank = name[n + 7].contents[0]
+  mini_list.append(rank)
+  rank = name[n + 8].contents[0]
+  mini_list.append(rank)
+  player_list2.append(mini_list)
+  n += 9
+print(player_list2)
+
+names = []
+for player in player_list2:
+  r = str(player[1]).split('/')
+  name = r[10]
+  names.append(name)
+full_names = []
+for n in names:
+  n = n.strip()
+  n = n.split('"')
+  nam = n[0]
+  na = nam.replace('-', ' ')
+  na = na.title()
+  full_names.append(na)
+print(full_names)
+
+for p in range(len(player_list2)):
+  if p < 101:
+    player_list2[p][1] = full_names[p]
+print(player_list2)
+
+stars = []
+for s in player_list2:
+  star = s[6]
+  stars.append(star)
+stars_list = []
+for st in stars:
+  st = str(st).split('"')
+  rating = st[-2]
+  rat = rating.split(' ')
+  star = rat[1]
+  star = star.replace('-', ' ')
+  stars_list.append(star)
+for star in range(len(stars_list)):
+  if stars_list[star] == 'five star':
+    stars_list[star] = 5
+  if stars_list[star] == 'four star':
+    stars_list[star] = 4
+for s in range(len(player_list2)):
+  if s < 101:
+    player_list2[s][6] = stars_list[s]
+print(player_list2)
+
+for l in range(len(player_list2)):
+  if l < 101:
+    state = player_list2[l][3]
+    state = state.split(', ')
+    st = state[1]
+    player_list2[l][3] = st
+print(player_list2)
+
+for l in range(len(player_list2)):
+  if l < 101:
+    rating = player_list2[l][7]
+    rating = int(rating)
+    player_list2[l][7] = rating
+print(player_list2)
+
+for l in range(len(player_list2)):
+  if l < 101:
+    height = player_list2[l][4]
+    height = height.replace('\'', '.')
+    heigh = height[0] + height[1] + height[2]
+    new_height = float(heigh)
+    player_list2[l][4] = new_height
+print(player_list2)
+
+print(player_list2)
+for l in range(len(player_list2)):
+  if l < 101:
+    school = player_list2[l][8]
+    school = str(school).split('school-name')
+    sch = school[1]
+    college = sch.split('<br')
+    col = college[0]
+    coll = col.split(">")
+    coll = coll[1]
+    coll = coll.strip()
+    if coll == 'Texas A&mp;M':
+      coll == 'Texas A&m'
+    player_list2[l][8] = coll
+
+print(player_list2)
+players_list2n = []
+for stat in range(len(player_list2)):
+  if stat <= 100:
+    players_list2n.append(player_list2[stat])
+
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    import plotly.express as px
+
+    print(players_listn)
+    print(players_list2n)
+    print(players_list3n)
+    print(players_list4n)
+
+    rankings_list = []
+    for r in range(len(players_listn)):
+      rankings_list.append(players_listn[r][0])
+      rankings_list.append(players_list2n[r][0])
+      rankings_list.append(players_list3n[r][0])
+      rankings_list.append(players_list4n[r][0])
+
+    name_list = []
+    for r in range(len(players_listn)):
+      name_list.append(players_listn[r][1])
+      name_list.append(players_list2n[r][1])
+      name_list.append(players_list3n[r][1])
+      name_list.append(players_list4n[r][1])
+
+    position_list = []
+    for r in range(len(players_listn)):
+      position_list.append(players_listn[r][2])
+      position_list.append(players_list2n[r][2])
+      position_list.append(players_list3n[r][2])
+      position_list.append(players_list4n[r][2])
+
+    state_list = []
+    height_list = []
+    weight_list = []
+    stars_list = []
+    rating_list = []
+    for r in range(len(players_listn)):
+      state_list.append(players_listn[r][3])
+      state_list.append(players_list2n[r][3])
+      state_list.append(players_list3n[r][3])
+      state_list.append(players_list4n[r][3])
+      height_list.append(players_listn[r][4])
+      height_list.append(players_list2n[r][4])
+      height_list.append(players_list3n[r][4])
+      height_list.append(players_list4n[r][4])
+      weight_list.append(players_listn[r][5])
+      weight_list.append(players_list2n[r][5])
+      weight_list.append(players_list3n[r][5])
+      weight_list.append(players_list4n[r][5])
+      stars_list.append(players_listn[r][6])
+      stars_list.append(players_list2n[r][6])
+      stars_list.append(players_list3n[r][6])
+      stars_list.append(players_list4n[r][6])
+      rating_list.append(players_listn[r][7])
+      rating_list.append(players_list2n[r][7])
+      rating_list.append(players_list3n[r][7])
+      rating_list.append(players_list4n[r][7])
+
+    college_list = []
+    for r in range(len(players_listn)):
+      college_list.append(players_listn[r][8])
+      college_list.append(players_list2n[r][8])
+      college_list.append(players_list3n[r][8])
+      college_list.append(players_list4n[r][8])
+
+    combined_list = []
+    for i in range(len(name_list)):
+      mini_row = []
+      mini_row.append(rankings_list[i])
+      mini_row.append(name_list[i])
+      mini_row.append(position_list[i])
+      mini_row.append(state_list[i])
+      mini_row.append(height_list[i])
+      mini_row.append(weight_list[i])
+      mini_row.append(stars_list[i])
+      mini_row.append(rating_list[i])
+      mini_row.append(college_list[i])
+      combined_list.append(mini_row)
+    df = pd.DataFrame(combined_list, columns=['Rank', 'Name', 'Position', 'State', 'Height', 'Weight', 'Stars', 'Rating', 'College'])
+    print(df)
+
+
+# Taking the lists, combining them into one list, and turning that list into a dataframe ready to use for visualizations
+
+
+          </pre>
+          </div>
+
+
+</body>
+</html>
