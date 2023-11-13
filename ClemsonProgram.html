@@ -19,6 +19,541 @@
         </ul>
       </div>
     </nav>
+   <div class="container" id="bsr-wrapper">
+      <div class="jumbotron">
+        <h1 class="display-4">Java Programming Foursquare Blackjack</h1>
+        <p class="lead">Programmed a game of Foursquare Blackjack using java.</p>
+        <hr class="my-4">
+        <p>Link to files for code        https://drive.google.com/drive/u/1/folders/1uiUgBomr9J0aq0SQr536bGMnujKg-baa
+      </div>
+<h1 class="display-4">Blackjack Solitaire Code</h1>
+      <pre class="prettyprint lang-auto">
+
+      public class Card {
+
+    private int number;
+    private String suit;
+    private String color;
+    private String name;
+
+
+    public Card(String color, String suit, int number, String name){
+        this.color = color;
+        this.suit = suit;
+        this.number = number;
+        this.name = name;
+
+    }
+
+    public static Card jackSpades = new Card("black", "spade", 10, "Jack of Spades");
+    public String getSuit(){
+        System.out.println("suit of card is " + suit);
+        return suit;
+    }
+
+    public String getColor(){
+        System.out.println("color of card is " + color);
+        return color;
+    }
+
+    public int getValue(){
+        return number;
+    }
+    public String getName(){
+        return name;
+    }
+
+}
+
+        import java.util.ArrayList;
+import java.util.Random;
+
+
+public class Deck {
+    private ArrayList<Card> deck;
+    private Card yourCard;
+
+    public Deck() {
+        deck = new ArrayList<Card>();
+        for(int i = 0; i < 2; i++){
+            for(int s = 0; s < 2; s++){
+                for(int n = 0; n < 9; n ++){
+                    if(i == 0){
+                        if(s == 0){
+                            int num = n + 2;
+                            Card nc = new Card("black", "spades", num, num + "S");
+                            deck.add(nc);
+                        }
+                        if(s == 1){
+                            int num2 = n + 2;
+                            Card nc = new Card("black", "clubs", num2, num2 + "C");
+                            deck.add(nc);
+                        }
+
+                    }
+                    if(i == 1){
+                        if(s == 0){
+                            int num = n + 2;
+                            Card nc = new Card("red", "diamonds", num, num + "D");
+                            deck.add(nc);
+                        }
+                        if(s == 1){
+                            int num2 = n + 2;
+                            Card nc = new Card("red", "hearts", num2, num2 + "H");
+                            deck.add(nc);
+                        }
+
+
+                    }
+                }
+
+            }
+        }
+        Card jD = new Card("red", "diamonds", 10, "JD");
+        deck.add(jD);
+        Card jH = new Card("red", "hearts", 10, "JH");
+        deck.add(jH);
+        Card jS = new Card("black", "spades", 10, "JS");
+        deck.add(jS);
+        Card jC = new Card("black", "clubs", 10, "JC");
+        deck.add(jC);
+        Card qD = new Card("red", "diamonds", 10, "QD");
+        deck.add(qD);
+        Card qH = new Card("red", "hearts", 10, "QH");
+        deck.add(qH);
+        Card qS = new Card("black", "spades", 10, "QS");
+        deck.add(qS);
+        Card qC = new Card("black", "clubs", 10, "QC");
+        deck.add(qC);
+        Card kD = new Card("red", "diamonds", 10, "KD");
+        deck.add(kD);
+        Card kH = new Card("red", "hearts", 10, "KH");
+        deck.add(kH);
+        Card kS = new Card("black", "spades", 10, "KS");
+        deck.add(kS);
+        Card kC = new Card("black", "clubs", 10, "KC");
+        deck.add(kC);
+        Card aD = new Card("red", "diamonds", 11, "AD");
+        deck.add(aD);
+        Card aH = new Card("red", "hearts", 11, "AH");
+        deck.add(aH);
+        Card aS = new Card("black", "spades", 11, "AS");
+        deck.add(aS);
+        Card aC = new Card("black", "clubs", 11, "AC");
+        deck.add(aC);
+
+
+    }
+
+    public Card dealCard(){
+        Card cardOne = deck.get(0);
+        cardOne.getName();
+        yourCard = cardOne;
+        deck.remove(cardOne);
+        deck.add(cardOne);
+        return yourCard;
+    }
+
+
+
+
+
+    public void shuffleDeck(){
+        for(int i = 0; i < 52; i++){
+            Random randIndex = new Random();
+            int index = randIndex.nextInt(0, 51);
+            Card topCard = deck.get(i);
+            Card replacedCard = deck.get(index);
+            deck.set(index, topCard);
+            deck.set(i, replacedCard);
+            this.deck = deck;
+        }
+    }
+
+    public static Deck Deck1 = new Deck();
+
+
+
+
+}
+
+
+          import java.util.Scanner;
+
+public class BlackjackSolitaire {
+
+
+    private Card[][] board;
+    private int score = 0;
+    private int discards = 0;
+
+
+    public BlackjackSolitaire(){
+
+        this.board = new Card[5][5];
+        Deck deck2 = new Deck();
+
+
+    }
+
+
+    public int play(){
+        int placeHolder = 1;
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board[0].length; j++){
+                if(i == 4 && j != 4){
+                    Card ph = new Card("null", "null", 0, "Discard");
+                    board[i][j] = ph;
+                }
+                else if((i == 2 && (j == 0)) || (i == 3 && (j == 0)) ||
+                        (i == 4 && j == 4)) {
+                    Card ph = new Card("null", "null", -1, "null");
+                    board[i][j] = ph;
+                }
+                else if((i == 2 && (j == 4)) || (i == 3 && (j == 4))) {
+                    Card ph = new Card("null", "null", 1, "null");
+                    board[i][j] = ph;
+                }
+                else{
+                    String place = String.valueOf(placeHolder);
+                    Card ph = new Card("null", "null", 0, place);
+                    board[i][j] = ph;
+                    placeHolder += 1;
+                }
+            }
+        }
+
+        deck2.shuffleDeck();
+        deck2.shuffleDeck();
+
+        int rowOneScore = 0;
+        int rowTwoScore = 0;
+        int rowThreeScore = 0;
+        int rowFourScore = 0;
+        int[] columnScores = new int[5];
+        int columnOneScore = 0;
+        int columnTwoScore = 0;
+        int columnThreeScore = 0;
+        int columnFourScore = 0;
+        int columnFiveScore = 0;
+        boolean condition = true;
+        while(condition) {
+            int zeroValue = 0;
+            Card yourCard = deck2.dealCard();
+            System.out.println("Your Card is " + yourCard.getName());
+            System.out.println("Where would you like to place this card? For Discard enter '0'");
+            System.out.println(board[0][0].getName() + "     " + board[0][1].getName() + "     "+ board[0][2].getName() + "     " + board[0][3].getName() + "     "+ board[0][4].getName() + "     ");
+            System.out.println(board[1][0].getName() + "     " + board[1][1].getName() + "     "+ board[1][2].getName() + "     " + board[1][3].getName() + "     "+ board[1][4].getName() + "     ");
+            System.out.println("      " + board[2][1].getName() + "    "+ board[2][2].getName() + "    " + board[2][3].getName() + "         ");
+            System.out.println("      " + board[3][1].getName() + "    "+ board[3][2].getName() + "    " + board[3][3].getName() + "     ");
+            System.out.println(board[4][0].getName() + "     " + board[4][1].getName() + "     "+ board[4][2].getName() + "     " + board[4][3].getName() + "          ");
+            Scanner scn = new Scanner(System.in);
+            int location = scn.nextInt();
+            int row = 0;
+            int column = 0;
+            if(location > 0 && location < 6){
+                row = 0;
+                column = location - 1;
+            }
+            if(location > 5 && location < 11){
+                row = 1;
+                column = location - 6;
+            }
+            if(location > 10 && location < 14){
+                row = 2;
+                column = location - 10;
+            }
+            if(location > 13 && location < 17){
+                row = 3;
+                column = location - 13;
+            }
+            if(location == 0){
+                if (discards < 5){
+                    row = 4;
+                    column = discards;
+                    discards += 1;}
+            }
+
+            if(location < 17 && location >= 0 && board[row][column].getValue() == 0){
+                if(location == 0 && discards >= 5){
+                    System.out.println("Invalid, no more discards");
+                }
+                else{
+                board[row][column] = yourCard;
+                }
+            }
+            else{
+                System.out.println("invalid, try again");
+            }
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 5; j++){
+                    if(board[i][j].getValue() == 0){
+                        zeroValue = 1;
+                    }
+
+                }
+
+            }
+            if(zeroValue == 0){
+                System.out.println(board[0][0].getName() + "     " + board[0][1].getName() + "     "+ board[0][2].getName() + "     " + board[0][3].getName() + "     "+ board[0][4].getName() + "     ");
+                System.out.println(board[1][0].getName() + "     " + board[1][1].getName() + "     "+ board[1][2].getName() + "     " + board[1][3].getName() + "     "+ board[1][4].getName() + "     ");
+                System.out.println("      " + board[2][1].getName() + "    "+ board[2][2].getName() + "    " + board[2][3].getName() + "         ");
+                System.out.println("      " + board[3][1].getName() + "    "+ board[3][2].getName() + "    " + board[3][3].getName() + "     ");
+                System.out.println(board[4][0].getName() + "     " + board[4][1].getName() + "     "+ board[4][2].getName() + "     " + board[4][3].getName() + "          ");
+                condition = false;
+            }
+            else{
+                zeroValue = 0;
+            }
+        }
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 5; j++) {
+                if(board[i][j].getValue() == 11){
+                    int val = 11;
+                    int rowTotal = 0;
+                    for(int z = 0; z < 5; z++){
+                        if(z != j){
+                            rowTotal += board[i][j].getValue();
+                        }
+                    }
+                    if(rowTotal > 21){
+                        val = 1;
+                    }
+                    if(i == 0){
+                        rowOneScore += val;
+                    }
+                    if(i == 1){
+                        rowTwoScore += val;
+                    }
+                    if(i == 2){
+                        rowThreeScore += val;
+                    }
+                    if(i == 3){
+                        rowFourScore += val;
+                    }
+                }
+                else {
+                    if (i == 0) {
+                        rowOneScore += board[i][j].getValue();
+                    }
+                    if (i == 1) {
+                        rowTwoScore += board[i][j].getValue();
+                    }
+                    if (i == 2) {
+                        rowThreeScore += board[i][j].getValue();
+                    }
+                    if (i == 3) {
+                        rowFourScore += board[i][j].getValue();
+                    }
+                }
+            }
+        }
+        if(rowOneScore > 21){
+            rowOneScore = 0;
+        }
+        else if(rowOneScore == 21){
+            rowOneScore = 7;
+        }
+        else if(rowOneScore == 20){
+            rowOneScore = 5;
+        }
+        else if(rowOneScore == 19){
+            rowOneScore = 4;
+        }
+        else if(rowOneScore == 18){
+            rowOneScore = 3;
+        }
+        else if(rowOneScore == 17){
+            rowOneScore  = 2;
+        }
+        else if(rowOneScore < 17 && rowOneScore != 0){
+            rowOneScore = 1;
+        }
+
+
+        if(rowTwoScore > 21){
+            rowTwoScore = 0;
+        }
+        if(rowTwoScore == 21){
+            rowTwoScore = 7;
+        }
+        if(rowTwoScore == 20){
+            rowTwoScore = 5;
+        }
+        if(rowTwoScore == 19){
+            rowTwoScore = 4;
+        }
+        if(rowTwoScore == 18){
+            rowTwoScore = 3;
+        }
+        if(rowTwoScore == 17){
+            rowTwoScore = 2;
+        }
+        if(rowTwoScore < 17 && rowTwoScore != 0){
+            rowTwoScore = 1;
+        }
+
+
+
+        if(rowThreeScore > 21){
+            rowThreeScore = 0;
+        }
+        else if(rowThreeScore == 21){
+            rowThreeScore = 7;
+        }
+        else if(rowThreeScore == 20){
+            rowThreeScore = 5;
+        }
+        else if(rowThreeScore == 19){
+            rowThreeScore = 4;
+        }
+        else if(rowThreeScore == 18){
+            rowThreeScore = 3;
+        }
+        else if(rowThreeScore == 17){
+            rowThreeScore = 2;
+        }
+        else if(rowThreeScore < 17 && rowFourScore != 0){
+            rowThreeScore = 1;
+        }
+
+
+
+
+        if(rowFourScore > 21){
+            rowFourScore = 0;
+        }
+        if(rowFourScore == 21){
+            rowFourScore = 7;
+        }
+        else if(rowFourScore == 20){
+            rowFourScore = 5;
+        }
+        else if(rowFourScore == 19){
+            rowFourScore = 4;
+        }
+        else if(rowFourScore == 18){
+            rowFourScore = 3;
+        }
+        else if(rowFourScore == 17){
+            rowFourScore = 2;
+        }
+        else if(rowFourScore < 17 && rowFourScore != 0){
+            rowFourScore = 1;
+        }
+
+
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (board[j][i].getValue() == 11) {
+                    int val2 = 11;
+                    int columnTotal = 0;
+                    for (int z = 0; z < 5; z++) {
+                        if (z != j && (i != 0 && j > 2) && (i != 4 && j > 2)) {
+                            columnTotal += board[j][i].getValue();
+                        }
+                    }
+                    if (columnTotal > 21) {
+                        val2 = 1;
+                    }
+                    if (i == 0 && j < 3) {
+                        columnOneScore += val2;
+                    }
+                    if (i == 1) {
+                        columnTwoScore += val2;
+                    }
+                    if (i == 2) {
+                        columnThreeScore += val2;
+                    }
+                    if (i == 3) {
+                        columnFourScore += val2;
+                    }
+                    if (i == 4 && j < 3) {
+                        columnFiveScore += val2;
+                    }
+                }
+                else {
+                    if (i == 0 && j < 2) {
+                        columnOneScore += board[j][i].getValue();
+                    }
+                    if (i == 1) {
+                        columnTwoScore += board[j][i].getValue();
+                    }
+                    if (i == 2) {
+                        columnThreeScore += board[j][i].getValue();
+                    }
+                    if (i == 3) {
+                        columnFourScore += board[j][i].getValue();
+                    }
+                    if (i == 4 && j < 2) {
+                        columnFiveScore += board[j][i].getValue();
+                    }
+                }
+
+            }
+        }
+        columnScores[0] = columnOneScore;
+        columnScores[1] = columnTwoScore;
+        columnScores[2] = columnThreeScore;
+        columnScores[3] = columnFourScore;
+        columnScores[4] = columnFiveScore;
+
+        for(int w = 0; w < columnScores.length; w++){
+            if(columnScores[w] > 21){
+                columnScores[w] = 0;
+            }
+            if(columnScores[w] == 21 && (w == 0 || w == 4)){
+                columnScores[w] = 10;
+            }
+            else if(columnScores[w] == 21){
+                columnScores[w] = 7;
+            }
+            else if(columnScores[w] == 20){
+                columnScores[w] = 5;
+            }
+            else if(columnScores[w] == 19){
+                columnScores[w] = 4;
+            }
+            else if(columnScores[w] == 18){
+                columnScores[w] = 3;
+            }
+            else if(columnScores[w] == 17){
+                columnScores[w] = 2;
+            }
+            else if(columnScores[w] < 17 && columnScores[w] != 0){
+                columnScores[w] = 1;
+            }
+            score += columnScores[w];
+        }
+
+
+
+
+        System.out.println(rowOneScore + " R1 " + rowTwoScore + " R2 " + rowThreeScore +" R3 " + rowFourScore + " R4" );
+        System.out.println(columnScores[0] + " C1 " + columnScores[1] + " C2 " + columnScores[2] +" C3 " + columnScores[3] + " C4 " + columnScores[4] + " C5");
+
+        score += rowOneScore + rowTwoScore + rowThreeScore + rowFourScore;
+        // tally up score
+        System.out.println("Game Over... Your score is..." + score);
+        return score;
+        }
+
+    public static Deck deck2 = new Deck();
+
+
+}
+
+      public class BlackjackSolitaireRunner {
+    public static BlackjackSolitaire bjs = new BlackjackSolitaire();
+    public static void main(String[] args){
+        bjs.play();
+    }
+
+}
+        
+
+
+    
     <div class="container" id="bsr-wrapper">
       <div class="jumbotron">
         <h1 class="display-4">Boating Data Website</h1>
